@@ -1,0 +1,9 @@
+﻿langchain==0.1.6
+langchain_community==0.0.16
+langchain_core==0.1.17
+langchain_openai==0.0.5
+python-dotenv==1.0.1
+streamlit==1.30.0
+tiktoken
+qdrant-client
+pypdf
