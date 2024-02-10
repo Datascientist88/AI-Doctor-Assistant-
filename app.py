@@ -9,13 +9,15 @@ from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 import tiktoken
 from langchain.chains.combine_documents import create_stuff_documents_chain
+
 # load the variables
 load_dotenv()
 
-collection_name=os.getenv("QDRANT_COLLECTION_NAME")
+collection_name = os.getenv("QDRANT_COLLECTION_NAME")
+
+
 # get the vector stor
 def get_vector_store():
-
     client = qdrant_client.QdrantClient(
         url=os.getenv("QDRANT_HOST"),
         api_key=os.getenv("QDRANT_API_KEY"),
@@ -27,7 +29,11 @@ def get_vector_store():
         embeddings=embeddings,
     )
     return vector_store
-vector_store=get_vector_store()
+
+
+vector_store = get_vector_store()
+
+
 def get_context_retriever_chain(vector_store=vector_store):
     llm = ChatOpenAI()
     retriever = vector_store.as_retriever()
@@ -43,13 +49,15 @@ def get_context_retriever_chain(vector_store=vector_store):
     )
     retriever_chain = create_history_aware_retriever(llm, retriever, prompt)
     return retriever_chain
+
+
 def get_conversational_rag_chain(retriever_chain):
     llm = ChatOpenAI()
     prompt = ChatPromptTemplate.from_messages(
         [
             (
                 "system",
-                "Answer the user's questions based on the below context:\n\n{context}",
+                "You are an specialized doctor AI medical assistant ,Answer the user's questions based on the learned Medical context:\n\n{context} only no general knowledge answers or answers beyond your training as medical AI assistent should be provided please do not  answer if its not medical and out of the learned context:\n\n{context} and knowledge base please reply with sorry I dont know about this as its out of my training context as a medical AI assistant, any thing beyond your learned context from training as AI doctor assistent do not answer it and replay with :sorry I dont know about this as its out of my training context as a medical AI assistant",
             ),
             MessagesPlaceholder(variable_name="chat_history"),
             ("user", "{input}"),
@@ -66,19 +74,33 @@ def get_response(user_input):
     response = conversation_rag_chain.invoke(
         {"chat_history": st.session_state.chat_history, "input": user_input}
     )
-
+    # If a response was retrieved, proceed with using it
     return response["answer"]
+
+
 # app layout
 st.set_page_config("Conversational AI Doctor ", "🤖")
 st.title("Doctor AI Assistant 👨‍⚕️")
 with st.sidebar:
-    st.markdown("The Doctor AI Assistant is an advanced artificial intelligence tool designed to aid physicians in diagnosing diseases swiftly and accurately. It provides comprehensive support by addressing a wide array of queries, including those related to ICD10 codes, diagnoses, symptoms, and differential diagnoses across all medical specialties. Additionally, it assists in the submission of relevant insurance claims and ensures adherence to drug indications consistent with ICD10 codes, guidelines, and best medical practices. With multilingual capabilities, it offers assistance in all languages spoken worldwide, empowering healthcare professionals with unparalleled efficiency and accuracy in patient care , This AI App was  developed by **MOHAMMED BAHAGEEL** Artificial intelligence scientist as a part of his experiments using Retrieval Augmented Generation .")
+    photo_url = "https://i.ibb.co/3k14LmY/Whats-App-Image-2024-02-10-at-9-03-47-AM.jpg"
+
+# Add HTML to the sidebar to display the image as a circle
+    st.markdown(
+        f'<a href="https://ibb.co/6NYrf0J"><img src="{photo_url}" alt="Your Photo" style="width: 100px; height: 100px; border-radius: 50%;"></a>',
+        unsafe_allow_html=True
+    )
+    st.markdown(
+    "<div style='text-align: justify'>"
+    "The Doctor AI Assistant is an advanced artificial intelligence tool designed to aid physicians in diagnosing diseases swiftly and accurately. "
+    "It provides comprehensive support by addressing a wide array of queries, including those related to ICD10 codes, diagnoses, symptoms, and differential diagnoses across all medical specialties. "
+    "Additionally, it assists in the submission of relevant insurance claims and ensures adherence to drug indications consistent with ICD10 codes, guidelines, and best medical practices. "
+    "With multilingual capabilities, it offers assistance in all languages spoken worldwide, empowering healthcare professionals with unparalleled efficiency and accuracy in patient care. "
+    "This AI App was developed by <b>MOHAMMED BAHAGEEL</b>, Artificial intelligence scientist as a part of his experiments using Retrieval Augmented Generation."
+    "</div>",
+    unsafe_allow_html=True
+)
 if "chat_history" not in st.session_state:
-    st.session_state.chat_history = [
-        AIMessage(
-            content=""
-        )
-    ]
+    st.session_state.chat_history = [AIMessage(content="")]
 if "vector_store" not in st.session_state:
     st.session_state.vector_store = get_vector_store()
 user_query = st.chat_input("Enter Your Query to Initiate The Conversation")
@@ -88,8 +110,8 @@ if user_query is not None and user_query != "":
     st.session_state.chat_history.append(AIMessage(content=response))
     for message in st.session_state.chat_history:
         if isinstance(message, AIMessage):
-            with st.chat_message("AI",avatar="🤖"):
+            with st.chat_message("AI", avatar="🤖"):
                 st.write(message.content)
         elif isinstance(message, HumanMessage):
-            with st.chat_message("Human",avatar="👨‍⚕️"):
+            with st.chat_message("Human", avatar="👨‍⚕️"):
                 st.write(message.content)
