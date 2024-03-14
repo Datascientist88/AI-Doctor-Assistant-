@@ -66,6 +66,14 @@ def get_conversational_rag_chain(retriever_chain):
                 universe,math , programming, coding, outfits , cultures, ethnicities, Management ,
                 business , politics , how to  make something like food, agriculture all general knowledge topics except medicine,..... etc ], as they lie outside your scope of expertise be polite and recognize greetings like hi , hello etc.
                 """
+          ),
+            MessagesPlaceholder(variable_name="chat_history"),
+            ("user", "{input}"),
+        ]
+    )
+    stuff_documents_chain = create_stuff_documents_chain(llm, prompt)
+    return create_retrieval_chain(retriever_chain, stuff_documents_chain)
+
 def get_response(user_input):
     retriever_chain = get_context_retriever_chain(st.session_state.vector_store)
     conversation_rag_chain = get_conversational_rag_chain(retriever_chain)
