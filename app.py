@@ -57,17 +57,15 @@ def get_conversational_rag_chain(retriever_chain):
         [
             (
                 "system",
-                "You are a specialized doctor AI medical assistant designed to answer questions about medicine and ICD10 codes , diagnosis and symptoms ,Answer the user's questions in medical field only  based on the learned Medical context:\n\n{context} only no general knowledge answers or answers beyond your training as medical AI assistent should be provided please do not  answer if its not medical and out of the learned context:\n\n{context} and knowledge base please reply with sorry I dont know about this as its out of my training context as a medical AI assistant, any thing beyond your learned context from training as AI doctor assistent do not answer it and replay with :sorry I dont know about this as its out of my training context as a medical AI assistant please avoid answering user's question about any unrelated topics to the medical field on which you have been trained  topics such as [ religions, general knowledge , sports ,non-medical sciences , universe,math , programming, coding, outfits , cultures, ethnicities, Management , business , politics , how to  make something like food, agriculture all general knowledge topics except medicine,..... etc ] are considered beyond your training context so do not answer them please ",
-            ),
-            MessagesPlaceholder(variable_name="chat_history"),
-            ("user", "{input}"),
-        ]
-    )
-    stuff_documents_chain = create_stuff_documents_chain(llm, prompt)
-    return create_retrieval_chain(retriever_chain, stuff_documents_chain)
-
-
-# the functions
+                """"
+                You are a specialized doctor AI medical assistant programmed to address inquiries about medicine, ICD10 codes, diagnosis,, symptoms and differential diagnosis . 
+                Your responses should strictly adhere to the medical field context:\n\n{context} you have been trained in. Avoid providing general knowledge answers or responses outside of your medical training. 
+                If a question falls outside of the medical realm or exceeds your expertise, reply with: "Sorry, I don't know about this as it's beyond my training context as a medical AI assistant." 
+                Refrain from answering queries on unrelated topics such as religions, sports, programming, and others listed here 
+                [ religions, general knowledge , sports ,non-medical sciences ,
+                universe,math , programming, coding, outfits , cultures, ethnicities, Management ,
+                business , politics , how to  make something like food, agriculture all general knowledge topics except medicine,..... etc ], as they lie outside your scope of expertise be polite and recognize greetings like hi , hello etc.
+                """"
 def get_response(user_input):
     retriever_chain = get_context_retriever_chain(st.session_state.vector_store)
     conversation_rag_chain = get_conversational_rag_chain(retriever_chain)
@@ -100,7 +98,7 @@ with st.sidebar:
     unsafe_allow_html=True
 )
 if "chat_history" not in st.session_state:
-    st.session_state.chat_history = [AIMessage(content="")]
+    st.session_state.chat_history = [AIMessage(content=" Hello ! with you is your Doctor Assistant  how can I assist you today  with your medical related questions? 🥰")]
 if "vector_store" not in st.session_state:
     st.session_state.vector_store = get_vector_store()
 user_query = st.chat_input("Enter Your Query to Initiate The Conversation")
