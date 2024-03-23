@@ -77,11 +77,12 @@ def get_conversational_rag_chain(retriever_chain):
 def get_response(user_input):
     retriever_chain = get_context_retriever_chain(st.session_state.vector_store)
     conversation_rag_chain = get_conversational_rag_chain(retriever_chain)
-    response = conversation_rag_chain.invoke(
+    response_stream = conversation_rag_chain.invoke(
         {"chat_history": st.session_state.chat_history, "input": user_input}
     )
-    # If a response was retrieved, proceed with using it
-    return response["answer"]
+    for chunk in response_stream:
+        content=chunk.get("answer","")
+        yield content
 
 
 # app layout
@@ -118,11 +119,11 @@ for message in st.session_state.chat_history:
                 st.write(message.content)
 # user input
 user_query = st.chat_input("Type your message here...")
-response=get_response(user_query)
+#response=get_response(user_query)
 if user_query is not None and user_query != "":
     st.session_state.chat_history.append(HumanMessage(content=user_query))
     with st.chat_message("Human", avatar="👨‍⚕️"):
         st.markdown(user_query)
     with st.chat_message("AI",avatar="🤖"):
-        st.write(response)
+        response=st.write_stream(get_response(user_query))
     st.session_state.chat_history.append(AIMessage(content=response))
