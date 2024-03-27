@@ -87,7 +87,28 @@ def get_response(user_input):
 
 # app layout
 st.set_page_config("Conversational AI Doctor ", "🤖")
-st.title("Doctor AI Assistant 👨‍⚕️")
+with open('style.css') as f:
+    st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+title="Doctor AI Assistant"
+name = "Mohammed Bahageel"
+profession = "Artificial Intelligence developer"
+imgUrl="https://i.ibb.co/3k14LmY/Whats-App-Image-2024-02-10-at-9-03-47-AM.jpg"
+st.markdown(
+    f"""
+    <div class="st-emotion-cache-10trblm e1nzilvr1">
+        <a href="{imgUrl}">
+            <img class="profileImage" src="{imgUrl}" alt="Your Photo">
+        </a>
+        <div class="textContainer">
+            <div class="title"><p>{title}</p></div>
+            <p>{name}</p>
+            <p>{profession}</p>
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 with st.sidebar:
     photo_url = "https://i.ibb.co/3k14LmY/Whats-App-Image-2024-02-10-at-9-03-47-AM.jpg"
 
