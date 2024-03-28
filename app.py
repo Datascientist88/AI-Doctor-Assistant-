@@ -109,24 +109,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-with st.sidebar:
-    photo_url = "https://i.ibb.co/3k14LmY/Whats-App-Image-2024-02-10-at-9-03-47-AM.jpg"
 
-# Add HTML to the sidebar to display the image as a circle
-    st.markdown(
-        f'<a href="https://ibb.co/6NYrf0J"><img src="{photo_url}" alt="Your Photo" style="width: 100px; height: 100px; border-radius: 50%;"></a>',
-        unsafe_allow_html=True
-    )
-    st.markdown(
-    "<div style='text-align: justify'>"
-    "The Doctor AI Assistant is an advanced artificial intelligence tool designed to aid physicians in diagnosing diseases swiftly and accurately. "
-    "It provides comprehensive support by addressing a wide array of queries, including those related to ICD10 codes, diagnoses, symptoms, and differential diagnoses across all medical specialties. "
-    "Additionally, it assists in the submission of relevant insurance claims and ensures adherence to drug indications consistent with ICD10 codes, guidelines, and best medical practices. "
-    "With multilingual capabilities, it offers assistance in all languages spoken worldwide, empowering healthcare professionals with unparalleled efficiency and accuracy in patient care. "
-    "This AI App was developed by <b>MOHAMMED BAHAGEEL</b>, Artificial intelligence scientist as a part of his experiments using Retrieval Augmented Generation."
-    "</div>",
-    unsafe_allow_html=True
-)
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = [AIMessage(content=" Hello ! with you is Doctor Assistant AI  chatbot  how can I assist you today  with your medical questions ? 🥰")]
 if "vector_store" not in st.session_state:
