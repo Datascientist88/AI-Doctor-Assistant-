@@ -95,7 +95,7 @@ profession = "Artificial Intelligence developer"
 imgUrl="https://i.ibb.co/3k14LmY/Whats-App-Image-2024-02-10-at-9-03-47-AM.jpg"
 st.markdown(
     f"""
-    <div class="st-emotion-cache-10trblm e1nzilvr1">
+    <div class="st-emotion-cache-18ni7ap ezrtsby2">
         <a href="{imgUrl}">
             <img class="profileImage" src="{imgUrl}" alt="Your Photo">
         </a>
@@ -108,7 +108,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
 
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = [AIMessage(content=" Hello ! with you is Doctor Assistant AI  chatbot  how can I assist you today  with your medical questions ? 🥰")]
