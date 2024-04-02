@@ -133,4 +133,31 @@ div.st-emotion-cache-1up18o9.e1d2x3se2{
    background-color: white !important;
     
 }
-
+audio {
+    max-width: 50%;
+    max-height: 20px;
+    justify-self: unset;
+    background-color: white;
+}
+audio::-webkit-media-controls-timeline {
+   background-color: white;
+   text-shadow: none; 
+   
+ }
+ audio::-webkit-media-controls-timeline ,audio::-webkit-media-controls-panel {
+   background-color: white;
+   text-shadow: none; 
+   margin-bottom: 5px;
+   
+ }
+audio::-webkit-media-controls-time-remaining-display,
+audio::-webkit-media-controls-current-time-display {
+    color: black
+}
+audio::-webkit-media-controls-panel,
+audio::-webkit-media-controls-enclosure {
+    background-color:white;
+   }
+audio::-webkit-media-controls-play-button{
+     background-color: white;
+    }
