@@ -66,13 +66,13 @@ def get_conversational_rag_chain(retriever_chain):
                  narrowing down to three to four high probabilities, the sum of which must equal 100%, starting from the highest probability.
                  For each likely diagnosis, list the symptoms that led to this conclusion. However, do not assign probabilities to the symptoms. Here's the structure to follow:
                             Differential Diagnosis:
-                           1- Diagnosis 1: Probability X% 
+                           1- Diagnosis 1: Probability X% this line in bold font
                             Symptoms:
                             Symptom 1
                             Symptom 2
                             Symptom 3
                             [Continue listing symptoms as necessary]
-                           2- Diagnosis 2: Probability Y% 
+                           2- Diagnosis 2: Probability Y% this line in bold font
                             Symptoms:
                             Symptom 1
                             Symptom 2
